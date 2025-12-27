@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Beranda - Prediksi Segmentasi Banjir{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1><i class="bi bi-droplet-fill"></i> Sistem Prediksi Segmentasi Area Banjir</h1>
+        <p class="lead">Menggunakan Deep Learning U-Net untuk Pemetaan Otomatis Area Genangan Banjir</p>
+        <a href="/prediksi" class="btn btn-light btn-lg mt-3">
+            <i class="bi bi-arrow-right-circle"></i> Mulai Prediksi
+        </a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mb-5">
+    <div class="row">
+        <!-- Tentang Sistem -->
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-info-circle"></i> Tentang Sistem</h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Banjir merupakan salah satu bencana alam yang paling sering terjadi di Indonesia dan termasuk yang paling banyak menelan korban jiwa setiap tahunnya.</p>
+                    
+                    <p>Sistem prediksi segmentasi banjir ini dikembangkan untuk menyediakan informasi lokasi terdampak banjir secara cepat dan akurat guna mendukung proses mitigasi dan respons bencana. Pemetaan banjir secara manual melalui survei lapangan membutuhkan waktu lama dan sulit dilakukan secara cepat, khususnya ketika banjir terjadi secara mendadak.</p>
+                    
+                    <h5 class="mt-4"><i class="bi bi-lightbulb"></i> Solusi Deep Learning</h5>
+                    <p>Website ini mengimplementasikan teknologi <strong>deep learning</strong> dengan arsitektur <strong>U-Net</strong> yang mampu melakukan segmentasi area banjir secara otomatis. Model ini telah dilatih untuk mempelajari pola visual genangan air secara mendalam dan menghasilkan segmentasi yang konsisten dan akurat.</p>
+                </div>
+            </div>
+
+            <!-- Manfaat -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-star"></i> Manfaat Sistem</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6>Cepat dan Efisien</h6>
+                                    <p class="text-muted mb-0">Prediksi area banjir dalam hitungan detik tanpa survei lapangan</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6>Akurat dan Konsisten</h6>
+                                    <p class="text-muted mb-0">Menggunakan model terlatih dengan akurasi piksel 90.69%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6>Visualisasi Jelas</h6>
+                                    <p class="text-muted mb-0">Hasil segmentasi ditampilkan dengan overlay berwarna</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6>Mudah Digunakan</h6>
+                                    <p class="text-muted mb-0">Interface user-friendly tanpa perlu keahlian teknis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teknologi -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-cpu"></i> Teknologi yang Digunakan</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3 border rounded">
+                                <i class="bi bi-diagram-3" style="font-size: 2.5rem; color: var(--light-blue);"></i>
+                                <h6 class="mt-2">U-Net Architecture</h6>
+                                <p class="text-muted small mb-0">Arsitektur deep learning untuk segmentasi citra</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3 border rounded">
+                                <i class="bi bi-braces" style="font-size: 2.5rem; color: var(--light-blue);"></i>
+                                <h6 class="mt-2">TensorFlow/Keras</h6>
+                                <p class="text-muted small mb-0">Framework untuk training dan inferensi model</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3 border rounded">
+                                <i class="bi bi-bootstrap" style="font-size: 2.5rem; color: var(--light-blue);"></i>
+                                <h6 class="mt-2">Bootstrap 5</h6>
+                                <p class="text-muted small mb-0">Framework CSS untuk interface responsif</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="text-center mt-4 mb-5">
+                <h4>Siap Mencoba Sistem?</h4>
+                <p class="text-muted">Upload citra untuk mendapatkan prediksi segmentasi area banjir</p>
+                <a href="/prediksi" class="btn btn-primary btn-lg">
+                    <i class="bi bi-upload"></i> Mulai Prediksi Sekarang
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

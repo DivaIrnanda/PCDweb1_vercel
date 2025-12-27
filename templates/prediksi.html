@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}Prediksi Segmentasi - Prediksi Segmentasi Banjir{% endblock %}
+
+{% block extra_css %}
+<style>
+    .upload-zone {
+        border: 2px dashed var(--border-color);
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        background-color: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .upload-zone:hover {
+        border-color: var(--light-blue);
+        background-color: #f0f7ff;
+    }
+    
+    .upload-zone.dragover {
+        border-color: var(--light-blue);
+        background-color: #e0f0ff;
+    }
+    
+    .result-image {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+    }
+    
+    .metric-badge {
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .loading-spinner {
+        display: none;
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1><i class="bi bi-cpu"></i> Prediksi Segmentasi Area Banjir</h1>
+        <p class="lead">Upload citra untuk mendapatkan prediksi area genangan banjir secara otomatis</p>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mb-5">
+    <div class="row">
+        <!-- Upload Section -->
+        <div class="col-lg-5 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-upload"></i> Unggah Citra
+                </div>
+                <div class="card-body">
+                    <div class="upload-zone" id="uploadZone">
+                        <i class="bi bi-cloud-arrow-up" style="font-size: 3rem; color: var(--light-blue);"></i>
+                        <h5 class="mt-3">Klik atau Seret File ke Sini</h5>
+                        <p class="text-muted">Format: PNG, JPG (Maks. 16MB)</p>
+                        <input type="file" id="fileInput" accept=".png,.jpg,.jpeg" style="display: none;">
+                        <button class="btn btn-primary mt-2" onclick="document.getElementById('fileInput').click()">
+                            <i class="bi bi-folder2-open"></i> Pilih File
+                        </button>
+                    </div>
+                    
+                    <div class="mt-3" id="fileInfo" style="display: none;">
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle"></i> <strong>File terpilih:</strong> <span id="fileName"></span>
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="predictImage()">
+                            <i class="bi bi-cpu"></i> Mulai Prediksi
+                        </button>
+                    </div>
+                    
+                    <div class="text-center mt-3 loading-spinner" id="loadingSpinner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Memproses citra...</p>
+                    </div>
+                    
+                    <div id="errorAlert" style="display: none;" class="alert alert-danger mt-3"></div>
+                </div>
+            </div>
+
+            <!-- Model Info -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-info-circle"></i> Informasi Model
+                </div>
+                <div class="card-body">
+                    <h6><strong>Nama Model:</strong> {{ metrics.name }}</h6>
+                    <h6><strong>Arsitektur:</strong> {{ metrics.architecture }}</h6>
+                    <hr>
+                    <h6 class="mb-3"><strong>Metrik Evaluasi:</strong></h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>IoU Score:</span>
+                        <span class="badge bg-primary metric-badge">{{ metrics.iou_score }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Dice Score:</span>
+                        <span class="badge bg-success metric-badge">{{ metrics.dice_score }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Pixel Accuracy:</span>
+                        <span class="badge bg-info metric-badge">{{ metrics.pixel_accuracy }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="col-lg-7">
+            <div id="resultsSection" style="display: none;">
+                <!-- Statistics -->
+                <div class="card stats-card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-bar-chart-fill"></i> Statistik Prediksi</h5>
+                        <div class="row text-center mt-3">
+                            <div class="col-4">
+                                <h3 id="floodPercentage">0%</h3>
+                                <p>Area Banjir</p>
+                            </div>
+                            <div class="col-4">
+                                <h3 id="floodPixels">0</h3>
+                                <p>Piksel Banjir</p>
+                            </div>
+                            <div class="col-4">
+                                <h3 id="totalPixels">0</h3>
+                                <p>Total Piksel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Images -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-image"></i> Hasil Segmentasi
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-center mb-2">Citra Asli</h6>
+                                <img id="originalImage" class="result-image" alt="Citra Asli">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-center mb-2">Mask Segmentasi</h6>
+                                <img id="maskImage" class="result-image" alt="Mask Segmentasi">
+                                <p class="text-muted text-center small mt-2">
+                                    <i class="bi bi-info-circle"></i> Putih = Area Banjir | Hitam = Non-Banjir
+                                </p>
+                            </div>
+                            <div class="col-12">
+                                <h6 class="text-center mb-2">Overlay Prediksi</h6>
+                                <img id="overlayImage" class="result-image" alt="Overlay">
+                                <p class="text-muted text-center small mt-2">
+                                    <i class="bi bi-info-circle"></i> Area merah menunjukkan prediksi banjir
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="initialMessage" class="text-center text-muted">
+                <i class="bi bi-arrow-left-circle" style="font-size: 3rem;"></i>
+                <h4 class="mt-3">Unggah citra untuk memulai prediksi</h4>
+                <p>Sistem akan secara otomatis melakukan segmentasi area banjir</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let selectedFile = null;
+
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+
+    uploadZone.addEventListener('click', () => fileInput.click());
+
+    uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileSelect(files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFileSelect(e.target.files[0]);
+        }
+    });
+
+    function handleFileSelect(file) {
+        const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        
+        if (!validTypes.includes(file.type)) {
+            showError('Format file tidak didukung. Gunakan PNG atau JPG.');
+            return;
+        }
+        
+        if (file.size > 16 * 1024 * 1024) {
+            showError('Ukuran file terlalu besar. Maksimal 16MB.');
+            return;
+        }
+        
+        selectedFile = file;
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('fileInfo').style.display = 'block';
+        document.getElementById('errorAlert').style.display = 'none';
+    }
+
+    async function predictImage() {
+        if (!selectedFile) {
+            showError('Pilih file terlebih dahulu.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        document.getElementById('loadingSpinner').style.display = 'block';
+        document.getElementById('fileInfo').style.display = 'none';
+        document.getElementById('errorAlert').style.display = 'none';
+
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                displayResults(data);
+            } else {
+                showError(data.error || 'Terjadi kesalahan saat prediksi.');
+            }
+        } catch (error) {
+            showError('Gagal terhubung ke server: ' + error.message);
+        } finally {
+            document.getElementById('loadingSpinner').style.display = 'none';
+            document.getElementById('fileInfo').style.display = 'block';
+        }
+    }
+
+    function displayResults(data) {
+        document.getElementById('originalImage').src = data.original_image;
+        document.getElementById('maskImage').src = data.mask_image;
+        document.getElementById('overlayImage').src = data.overlay_image;
+
+        document.getElementById('floodPercentage').textContent = data.statistics.flood_percentage + '%';
+        document.getElementById('floodPixels').textContent = data.statistics.flood_pixels.toLocaleString();
+        document.getElementById('totalPixels').textContent = data.statistics.total_pixels.toLocaleString();
+
+        document.getElementById('initialMessage').style.display = 'none';
+        document.getElementById('resultsSection').style.display = 'block';
+
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showError(message) {
+        const errorAlert = document.getElementById('errorAlert');
+        errorAlert.innerHTML = '<i class="bi bi-exclamation-triangle"></i> ' + message;
+        errorAlert.style.display = 'block';
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Tentang Aplikasi - Prediksi Segmentasi Banjir{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1><i class="bi bi-file-text"></i> Tentang Aplikasi</h1>
+        <p class="lead">Informasi pengembangan dan latar belakang sistem prediksi segmentasi banjir</p>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            
+            <!-- Latar Belakang -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-lightbulb"></i> Latar Belakang</h4>
+                </div>
+                <div class="card-body">
+                    <p>Banjir merupakan salah satu bencana alam yang paling sering terjadi di Indonesia dan termasuk yang paling banyak menelan korban jiwa setiap tahunnya. Dampak banjir sangat luas, mulai dari kerusakan infrastruktur, gangguan aktivitas sosial-ekonomi, hingga hambatan dalam penanganan darurat.</p>
+                    
+                    <p>Dalam konteks tersebut, pemetaan area banjir menjadi sangat penting untuk menyediakan informasi lokasi terdampak secara cepat dan akurat guna mendukung proses mitigasi dan respons bencana. Pemetaan banjir secara manual melalui survei lapangan membutuhkan waktu lama, dan tingginya volume data pengamatan sulit dilakukan secara cepat, khususnya ketika banjir terjadi secara mendadak.</p>
+                    
+                    <div class="alert alert-primary mt-3">
+                        <i class="bi bi-info-circle"></i> <strong>Solusi:</strong> Dibutuhkan metode otomatis yang mampu melakukan segmentasi area banjir secara akurat dan efisien menggunakan teknologi deep learning.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tujuan Penelitian -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-bullseye"></i> Tujuan Penelitian</h4>
+                </div>
+                <div class="card-body">
+                    <p>Penelitian ini dikembangkan dengan tujuan:</p>
+                    <ol>
+                        <li>Mengimplementasikan model U-Net standar dan Residual U-Net untuk segmentasi area banjir</li>
+                        <li>Mengevaluasi performa kedua model menggunakan metrik Accuracy, IoU, dan Dice Coefficient</li>
+                        <li>Membandingkan hasil segmentasi U-Net standar dan Residual U-Net untuk menentukan model dengan performa terbaik</li>
+                        <li>Mengembangkan aplikasi berbasis web yang mengimplementasikan model segmentasi banjir sebagai alat prediksi area banjir</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Hasil Penelitian -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Hasil Penelitian</h4>
+                </div>
+                <div class="card-body">
+                    <p>Berdasarkan hasil evaluasi yang dilakukan, perbandingan performa antara U-Net Standar dan Residual U-Net menunjukkan bahwa:</p>
+                    
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Metrik Evaluasi</th>
+                                    <th class="text-center">U-Net Standar</th>
+                                    <th class="text-center">Residual U-Net</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>IoU Score</td>
+                                    <td class="text-center">0.8652</td>
+                                    <td class="text-center"><strong>0.8743</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Dice Score</td>
+                                    <td class="text-center">0.9573</td>
+                                    <td class="text-center"><strong>0.9628</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Pixel Accuracy</td>
+                                    <td class="text-center">0.9069</td>
+                                    <td class="text-center"><strong>0.9111</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="mt-3">Residual U-Net memberikan hasil yang lebih unggul pada seluruh metrik evaluasi, menunjukkan bahwa penerapan residual connection pada arsitektur U-Net mampu meningkatkan kualitas segmentasi area banjir pada dataset yang digunakan dalam penelitian ini.</p>
+                    
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle"></i> <strong>Kesimpulan:</strong> Model U-Net Standar yang diimplementasikan dalam aplikasi ini telah terbukti efektif dengan akurasi piksel mencapai 90.69% dan mampu memberikan prediksi yang konsisten.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teknologi -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-stack"></i> Teknologi yang Digunakan</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6><i class="bi bi-server text-primary"></i> Backend</h6>
+                            <ul>
+                                <li><strong>Flask:</strong> Framework web Python untuk REST API</li>
+                                <li><strong>TensorFlow/Keras:</strong> Framework deep learning untuk model U-Net</li>
+                                <li><strong>OpenCV:</strong> Library untuk pemrosesan citra</li>
+                                <li><strong>NumPy:</strong> Komputasi numerik dan array processing</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6><i class="bi bi-palette text-primary"></i> Frontend</h6>
+                            <ul>
+                                <li><strong>Bootstrap 5:</strong> Framework CSS untuk interface responsif</li>
+                                <li><strong>Bootstrap Icons:</strong> Icon library</li>
+                                <li><strong>JavaScript:</strong> Interaktivitas dan AJAX requests</li>
+                                <li><strong>HTML5/CSS3:</strong> Struktur dan styling halaman</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referensi -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-journal-text"></i> Referensi</h4>
+                </div>
+                <div class="card-body">
+                    <p>Penelitian ini didasarkan pada studi-studi berikut:</p>
+                    
+                    <div class="border-start border-primary border-3 ps-3 mb-3">
+                        <p class="mb-1"><strong>Gumelar, N. (2020).</strong></p>
+                        <p class="text-muted mb-0">Integrating Flood Risk into Urban Planning in Indonesia. <em>Journal of Green Science and Technology, IV(1).</em></p>
+                    </div>
+
+                    <div class="border-start border-primary border-3 ps-3 mb-3">
+                        <p class="mb-1"><strong>Paul, S., & Ganju, S. (2021).</strong></p>
+                        <p class="text-muted mb-0">Flood Segmentation on Sentinel-1 SAR Imagery with Semi-Supervised Learning. Mencapai IoU 0.7654 menggunakan ensemble U-Net dan U-Net++.</p>
+                    </div>
+
+                    <div class="border-start border-primary border-3 ps-3 mb-3">
+                        <p class="mb-1"><strong>Liu, Y., Romanelli, M., Srivastava, N., & Toutin, R. (2024).</strong></p>
+                        <p class="text-muted mb-0">FloodScan: Flood Mapping Semantic Segmentation Using a U-Net Model with Feature Representations of Sentinel-1 and Sentinel-2 Data.</p>
+                    </div>
+
+                    <div class="border-start border-primary border-3 ps-3">
+                        <p class="mb-1"><strong>M. Ravanashree et al. (2025).</strong></p>
+                        <p class="text-muted mb-0">The Role of Google Earth Engine in Flood Disaster Management: A Review of Capabilities and Challenges. <em>Advances in Research, 26(2), 472-479.</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pengembang -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-people"></i> Tim Pengembang</h4>
+                </div>
+                <div class="card-body">
+                    <p>Aplikasi ini dikembangkan sebagai bagian dari penelitian untuk mengimplementasikan model deep learning dalam pemetaan banjir. Sistem ini dirancang untuk membantu proses mitigasi dan respons bencana banjir dengan menyediakan informasi lokasi terdampak secara cepat dan akurat.</p>
+                    
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-envelope"></i> Untuk pertanyaan atau feedback, silakan hubungi tim pengembang melalui sistem yang tersedia.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kontribusi -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-heart"></i> Kontribusi Sistem</h4>
+                </div>
+                <div class="card-body">
+                    <p>Sistem prediksi segmentasi banjir ini diharapkan dapat memberikan kontribusi dalam:</p>
+                    <ul class="mb-0">
+                        <li>Mempercepat proses pemetaan area banjir untuk respons darurat</li>
+                        <li>Mengurangi ketergantungan pada survei lapangan manual yang memakan waktu</li>
+                        <li>Memberikan informasi visual yang mudah dipahami untuk pengambilan keputusan</li>
+                        <li>Mendukung upaya mitigasi dan manajemen risiko bencana banjir di Indonesia</li>
+                        <li>Menyediakan platform yang dapat dikembangkan lebih lanjut dengan teknologi yang lebih canggih</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

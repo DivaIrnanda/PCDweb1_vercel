@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Informasi Model - Prediksi Segmentasi Banjir{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1><i class="bi bi-diagram-3"></i> Informasi Model</h1>
+        <p class="lead">Detail arsitektur dan performa model U-Net untuk segmentasi banjir</p>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Arsitektur Model -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-cpu"></i> Arsitektur Model</h4>
+                </div>
+                <div class="card-body">
+                    <h5>U-Net Standar</h5>
+                    <p>Model yang digunakan dalam sistem ini adalah <strong>U-Net Standar</strong>, sebuah arsitektur deep learning yang dirancang khusus untuk tugas segmentasi citra. U-Net memiliki struktur berbentuk huruf "U" yang terdiri dari dua bagian utama:</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <h6><i class="bi bi-arrow-down-circle text-primary"></i> Encoder (Contracting Path)</h6>
+                                <p class="mb-0">Bagian encoder berfungsi untuk mengekstrak fitur-fitur penting dari citra input melalui serangkaian operasi konvolusi dan pooling. Proses ini mengurangi dimensi spasial citra sambil meningkatkan kedalaman fitur.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <h6><i class="bi bi-arrow-up-circle text-success"></i> Decoder (Expansive Path)</h6>
+                                <p class="mb-0">Bagian decoder merekonstruksi citra segmentasi dengan mengembalikan dimensi spasial melalui operasi upsampling dan konvolusi. Skip connections dari encoder membantu mempertahankan detail spasial.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-lightbulb"></i> <strong>Keunggulan U-Net:</strong> Arsitektur ini sangat efektif untuk segmentasi citra medis dan penginderaan jauh karena kemampuannya menggabungkan informasi konteks global dengan detail lokal.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrik Evaluasi -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-graph-up"></i> Metrik Evaluasi Model</h4>
+                </div>
+                <div class="card-body">
+                    <p>Model U-Net Standar telah dievaluasi menggunakan dataset validasi dengan hasil sebagai berikut:</p>
+                    
+                    <div class="row text-center mt-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="border rounded p-4 h-100">
+                                <i class="bi bi-intersect" style="font-size: 2.5rem; color: var(--primary-blue);"></i>
+                                <h3 class="mt-3 mb-1">{{ metrics.iou_score }}</h3>
+                                <h6>IoU Score</h6>
+                                <p class="text-muted small mb-0">Intersection over Union mengukur tumpang tindih antara prediksi dan ground truth</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="border rounded p-4 h-100">
+                                <i class="bi bi-dice-6" style="font-size: 2.5rem; color: #10b981;"></i>
+                                <h3 class="mt-3 mb-1">{{ metrics.dice_score }}</h3>
+                                <h6>Dice Score</h6>
+                                <p class="text-muted small mb-0">Koefisien Dice mengukur keseimbangan antara presisi dan recall</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="border rounded p-4 h-100">
+                                <i class="bi bi-bullseye" style="font-size: 2.5rem; color: #06b6d4;"></i>
+                                <h3 class="mt-3 mb-1">{{ metrics.pixel_accuracy }}</h3>
+                                <h6>Pixel Accuracy</h6>
+                                <p class="text-muted small mb-0">Persentase piksel yang diklasifikasikan dengan benar</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success mt-4">
+                        <i class="bi bi-check-circle"></i> <strong>Interpretasi:</strong> Nilai metrik yang tinggi menunjukkan bahwa model mampu mendeteksi dan memetakan area banjir dengan akurat, dengan tingkat kesalahan yang minimal.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dataset -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-database"></i> Dataset Pelatihan</h4>
+                </div>
+                <div class="card-body">
+                    <p>Model dilatih menggunakan dataset citra satelit dan aerial yang berisi area genangan banjir. Dataset mencakup:</p>
+                    
+                    <ul>
+                        <li><strong>Citra Input:</strong> Citra RGB dari berbagai sumber penginderaan jauh</li>
+                        <li><strong>Ground Truth:</strong> Mask biner yang menandai area banjir (putih) dan non-banjir (hitam)</li>
+                        <li><strong>Preprocessing:</strong> Resize ke ukuran 256×256 piksel dan normalisasi nilai piksel (0-1)</li>
+                        <li><strong>Augmentasi Data:</strong> Rotasi, flip, dan transformasi lainnya untuk meningkatkan generalisasi model</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Proses Prediksi -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-gear"></i> Proses Prediksi</h4>
+                </div>
+                <div class="card-body">
+                    <p>Ketika pengguna mengunggah citra, sistem melakukan tahapan berikut:</p>
+                    
+                    <ol class="mb-0">
+                        <li class="mb-2"><strong>Pra-pemrosesan:</strong> Citra diubah ukurannya menjadi 256×256 piksel dan nilai piksel dinormalisasi ke rentang 0-1</li>
+                        <li class="mb-2"><strong>Inferensi Model:</strong> Model U-Net memproses citra dan menghasilkan mask segmentasi probabilistik</li>
+                        <li class="mb-2"><strong>Thresholding:</strong> Nilai probabilitas di atas 0.5 diklasifikasikan sebagai area banjir</li>
+                        <li class="mb-2"><strong>Post-processing:</strong> Mask biner dibuat dengan nilai 255 (putih) untuk banjir dan 0 (hitam) untuk non-banjir</li>
+                        <li><strong>Visualisasi:</strong> Sistem menampilkan citra asli, mask segmentasi, dan overlay dengan area banjir berwarna merah</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Referensi -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-book"></i> Referensi Penelitian</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Model ini dikembangkan berdasarkan penelitian:</strong></p>
+                    <ul class="mb-0">
+                        <li>Paul & Ganju (2021) - Semi-supervised learning dengan ensemble U-Net untuk segmentasi banjir pada citra SAR Sentinel-1 (IoU: 0.7654)</li>
+                        <li>Liu et al. (2024) - FloodScan project menggunakan U-Net dengan kombinasi fitur spektral dari Sentinel-1 dan Sentinel-2</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

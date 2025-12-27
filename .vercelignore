@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+.env.local
+instance/
+uploads/*
+results/*
+*.db
+*.sqlite
+*.log
+.DS_Store
+.git/
+.gitignore
+README.md
